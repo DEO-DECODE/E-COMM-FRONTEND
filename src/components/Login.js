@@ -26,7 +26,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(result));
       navigate("/");
     } else {
-      alert("Please enter connect details");
+      alert("Please enter correct details");
     }
   };
 
