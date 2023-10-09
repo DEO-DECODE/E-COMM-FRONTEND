@@ -16,6 +16,8 @@ const AddProduct = () => {
         }
 
         const userId = JSON.parse(localStorage.getItem('user'))._id;
+        // userId hm is liye daal rhein taaki pata chale ki kisne is product ko add kra
+        // hai.
         let result = await fetch("http://localhost:5000/add-product", {
             method: "post",
             body: JSON.stringify({ name, price, category, company, userId }),
