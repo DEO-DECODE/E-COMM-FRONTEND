@@ -14,11 +14,8 @@ const ProductList = () => {
   };
 
   const deleteProduct = async (id) => {
-    // delete Product id receive kiya
-    // Aur hm isko as a parameter pass kr diya url ke sath
     console.warn(id);
     let result = await fetch(`http://localhost:5000/product/${id}`, {
-        // Earlier we were using post method.
       method: "Delete",
     });
     result = await result.json();
@@ -27,9 +24,28 @@ const ProductList = () => {
     }
   };
 
+  const searchHandle = async (event) => {
+    let key = event.target.value;
+    if (key) {
+      let result = await fetch(`http://localhost:5000/search/${key}`);
+      result = await result.json();
+      if (result) {
+        setProducts(result);
+      }
+    } else {
+      getProducts();
+    }
+  };
+
   return (
     <div className="product-list">
       <h3>Product List</h3>
+      <input
+        type=""
+        className="search-product-box"
+        placeholder="Search Product"
+        onChange={searchHandle}
+      />
       <ul>
         <li>S. No.</li>
         <li>Name</li>
@@ -37,19 +53,22 @@ const ProductList = () => {
         <li>Category</li>
         <li>Operation</li>
       </ul>
-      {products.map((item, index) => (
-        <ul key={item._id}>
-          <li>{index + 1}</li>
-          <li>{item.name}</li>
-          <li>{item.price}</li>
-          <li>{item.category}</li>
-          <li>
-            <button onClick={() => deleteProduct(item._id)}>Delete</button>
-            {/* Hm Yahan se deleteProduct ko id pass kra rhe hain */}
-            <Link to={"/update/" + item._id}>Update </Link>
-          </li>
-        </ul>
-      ))}
+      {products.length > 0 ? (
+        products.map((item, index) => (
+          <ul key={item._id}>
+            <li>{index + 1}</li>
+            <li>{item.name}</li>
+            <li>{item.price}</li>
+            <li>{item.category}</li>
+            <li>
+              <button onClick={() => deleteProduct(item._id)}>Delete</button>
+              <Link to={"/update/" + item._id}>Update </Link>
+            </li>
+          </ul>
+        ))
+      ) : (
+        <h1>No Result Found</h1>
+      )}
     </div>
   );
 };
